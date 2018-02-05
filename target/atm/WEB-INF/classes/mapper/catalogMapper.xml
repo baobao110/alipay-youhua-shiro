@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.catalogMapper">
+  <resultMap id="BaseResultMap" type="com.domain.catalog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="catalog_name" jdbcType="VARCHAR" property="catalogName" />
+    <result column="catalog_num" jdbcType="VARCHAR" property="catalogNum" />
+    <result column="child_node" jdbcType="TINYINT" property="childNode" />
+    <result column="parent_num" jdbcType="VARCHAR" property="parentNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, catalog_name, catalog_num, child_node, parent_num, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from catalog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from catalog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.domain.catalog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into catalog (catalog_name, catalog_num, child_node, 
+      parent_num, create_time)
+    values (#{catalogName,jdbcType=VARCHAR}, #{catalogNum,jdbcType=VARCHAR}, #{childNode,jdbcType=TINYINT}, 
+      #{parentNum,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.domain.catalog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into catalog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="catalogName != null">
+        catalog_name,
+      </if>
+      <if test="catalogNum != null">
+        catalog_num,
+      </if>
+      <if test="childNode != null">
+        child_node,
+      </if>
+      <if test="parentNum != null">
+        parent_num,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="catalogName != null">
+        #{catalogName,jdbcType=VARCHAR},
+      </if>
+      <if test="catalogNum != null">
+        #{catalogNum,jdbcType=VARCHAR},
+      </if>
+      <if test="childNode != null">
+        #{childNode,jdbcType=TINYINT},
+      </if>
+      <if test="parentNum != null">
+        #{parentNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.domain.catalog">
+    update catalog
+    <set>
+      <if test="catalogName != null">
+        catalog_name = #{catalogName,jdbcType=VARCHAR},
+      </if>
+      <if test="catalogNum != null">
+        catalog_num = #{catalogNum,jdbcType=VARCHAR},
+      </if>
+      <if test="childNode != null">
+        child_node = #{childNode,jdbcType=TINYINT},
+      </if>
+      <if test="parentNum != null">
+        parent_num = #{parentNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.domain.catalog">
+    update catalog
+    set catalog_name = #{catalogName,jdbcType=VARCHAR},
+      catalog_num = #{catalogNum,jdbcType=VARCHAR},
+      child_node = #{childNode,jdbcType=TINYINT},
+      parent_num = #{parentNum,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  		
+  <select id="List" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from catalog
+    where parent_num = #{parent_num}
+  </select>
+  
+  <select id="getNum"  resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from catalog
+    where catalog_num = #{catalogNum}
+  </select>
+  
+</mapper>

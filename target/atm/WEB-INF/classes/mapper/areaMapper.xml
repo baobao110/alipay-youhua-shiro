@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.areaMapper">
+  <resultMap id="BaseResultMap" type="com.domain.area">
+    <result column="areaNumber" jdbcType="VARCHAR" property="areanumber" />
+    <result column="areaName" jdbcType="VARCHAR" property="areaname" />
+    <result column="cityNumber" jdbcType="INTEGER" property="citynumber" />
+  </resultMap>
+  <insert id="insert" parameterType="com.domain.area">
+    insert into area (areaNumber, areaName, cityNumber
+      )
+    values (#{areanumber,jdbcType=VARCHAR}, #{areaname,jdbcType=VARCHAR}, #{citynumber,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.domain.area">
+    insert into area
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="areanumber != null">
+        areaNumber,
+      </if>
+      <if test="areaname != null">
+        areaName,
+      </if>
+      <if test="citynumber != null">
+        cityNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="areanumber != null">
+        #{areanumber,jdbcType=VARCHAR},
+      </if>
+      <if test="areaname != null">
+        #{areaname,jdbcType=VARCHAR},
+      </if>
+      <if test="citynumber != null">
+        #{citynumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="Area" resultMap = "BaseResultMap">
+  	select * from area where cityNumber = #{cityNumber};
+  </select>
+</mapper>

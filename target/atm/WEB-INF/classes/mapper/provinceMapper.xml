@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.provinceMapper">
+  <resultMap id="Province" type="com.domain.province">
+    <result column="provinceNumber" jdbcType="VARCHAR" property="provincenumber" />
+    <result column="provinceName" jdbcType="VARCHAR" property="provincename" />
+  </resultMap>
+  <insert id="insert" parameterType="com.domain.province">
+    insert into province (provinceNumber, provinceName)
+    values (#{provincenumber,jdbcType=VARCHAR}, #{provincename,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.domain.province">
+    insert into province
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="provincenumber != null">
+        provinceNumber,
+      </if>
+      <if test="provincename != null">
+        provinceName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="provincenumber != null">
+        #{provincenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="provincename != null">
+        #{provincename,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="Province" resultMap="Province">
+  		select * from province;
+  </select>
+</mapper>

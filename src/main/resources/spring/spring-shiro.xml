@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/Page/toLogin.do"/>
+
+        <!-- override these for application-specific URLs if you like:
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="successUrl" value="/home.jsp"/>
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"/> -->
+        <!-- The 'filters' property is not necessary since any declared javax.servlet.Filter bean  -->
+        <!-- defined will be automatically acquired and available via its beanName in chain        -->
+        <!-- definitions, but you can perform instance overrides or name aliases here if you like: -->
+        <!-- <property name="filters">
+            <util:map>
+                <entry key="anAlias" value-ref="someFilter"/>
+            </util:map>
+        </property> -->
+
+        <property name="filterChainDefinitions">
+            <value>              
+               /Page/toCart.do = authc
+              /address/addressList.do = authc
+              /cart/detail.do = authc
+              /cart/detail2.do = authc
+              /cart/result.do = authc
+              /order/pay.do = authc
+              /order/cart.do = authc
+              /** = anon
+            </value>
+        </property>
+    </bean>
+	 <!-- 1.anon 匿名访问              2.authc 认证访问              3.logout 登出         -->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
+        <property name="realm" ref="myRealm"/>
+        <!-- By default the servlet container sessions will be used.  Uncomment this line
+             to use shiro's native sessions (see the JavaDoc for more): -->
+        <!-- <property name="sessionMode" value="native"/> -->
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	<!-- 注意这里的shiro的应用"loginUrl"就是在访问其它私人的空间时必须先通过 该请求,否则就不能进行filterChainDefinitions的相关的请求,其实shiro求是拦截器,注意这里的等级,除此之外securityManager"中的Realm需要注意在程序中必须有这样别名的程序-->
+
+</beans>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.commodityMapper">
+  <resultMap id="BaseResultMap" type="com.domain.commodity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="comm_name" jdbcType="VARCHAR" property="commName" />
+    <result column="comm_price" jdbcType="VARCHAR" property="commPrice" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="press" jdbcType="VARCHAR" property="press" />
+    <result column="pub_data" jdbcType="VARCHAR" property="pubData" />
+    <result column="isbn" jdbcType="VARCHAR" property="isbn" />
+    <result column="comm_label" jdbcType="VARCHAR" property="commLabel" />
+    <result column="picture_name" jdbcType="VARCHAR" property="pictureName" />
+    <result column="score" jdbcType="VARCHAR" property="score" />
+    <result column="parent_catalog_num" jdbcType="VARCHAR" property="parentCatalogNum" />
+    <result column="child_catalog_num" jdbcType="VARCHAR" property="childCatalogNum" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="store" jdbcType="INTEGER" property="store" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.domain.commodityWithBLOBs">
+    <result column="comm_catalog" jdbcType="LONGVARCHAR" property="commCatalog" />
+    <result column="preface" jdbcType="LONGVARCHAR" property="preface" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, comm_name, comm_price, author, press, pub_data, isbn, comm_label, picture_name, 
+    score, parent_catalog_num, child_catalog_num, status, store
+  </sql>
+  <sql id="Blob_Column_List">
+    comm_catalog, preface
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from commodity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from commodity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.domain.commodityWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into commodity (comm_name, comm_price, author, 
+      press, pub_data, isbn, 
+      comm_label, picture_name, score, 
+      parent_catalog_num, child_catalog_num, status, 
+      store, comm_catalog, preface
+      )
+    values (#{commName,jdbcType=VARCHAR}, #{commPrice,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{press,jdbcType=VARCHAR}, #{pubData,jdbcType=VARCHAR}, #{isbn,jdbcType=VARCHAR}, 
+      #{commLabel,jdbcType=VARCHAR}, #{pictureName,jdbcType=VARCHAR}, #{score,jdbcType=VARCHAR}, 
+      #{parentCatalogNum,jdbcType=VARCHAR}, #{childCatalogNum,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{store,jdbcType=INTEGER}, #{commCatalog,jdbcType=LONGVARCHAR}, #{preface,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.domain.commodityWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into commodity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commName != null">
+        comm_name,
+      </if>
+      <if test="commPrice != null">
+        comm_price,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="press != null">
+        press,
+      </if>
+      <if test="pubData != null">
+        pub_data,
+      </if>
+      <if test="isbn != null">
+        isbn,
+      </if>
+      <if test="commLabel != null">
+        comm_label,
+      </if>
+      <if test="pictureName != null">
+        picture_name,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="parentCatalogNum != null">
+        parent_catalog_num,
+      </if>
+      <if test="childCatalogNum != null">
+        child_catalog_num,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="store != null">
+        store,
+      </if>
+      <if test="commCatalog != null">
+        comm_catalog,
+      </if>
+      <if test="preface != null">
+        preface,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commName != null">
+        #{commName,jdbcType=VARCHAR},
+      </if>
+      <if test="commPrice != null">
+        #{commPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="press != null">
+        #{press,jdbcType=VARCHAR},
+      </if>
+      <if test="pubData != null">
+        #{pubData,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null">
+        #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="commLabel != null">
+        #{commLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null">
+        #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCatalogNum != null">
+        #{parentCatalogNum,jdbcType=VARCHAR},
+      </if>
+      <if test="childCatalogNum != null">
+        #{childCatalogNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="store != null">
+        #{store,jdbcType=INTEGER},
+      </if>
+      <if test="commCatalog != null">
+        #{commCatalog,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="preface != null">
+        #{preface,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.domain.commodityWithBLOBs">
+    update commodity
+    <set>
+      <if test="commName != null">
+        comm_name = #{commName,jdbcType=VARCHAR},
+      </if>
+      <if test="commPrice != null">
+        comm_price = #{commPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="press != null">
+        press = #{press,jdbcType=VARCHAR},
+      </if>
+      <if test="pubData != null">
+        pub_data = #{pubData,jdbcType=VARCHAR},
+      </if>
+      <if test="isbn != null">
+        isbn = #{isbn,jdbcType=VARCHAR},
+      </if>
+      <if test="commLabel != null">
+        comm_label = #{commLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="pictureName != null">
+        picture_name = #{pictureName,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCatalogNum != null">
+        parent_catalog_num = #{parentCatalogNum,jdbcType=VARCHAR},
+      </if>
+      <if test="childCatalogNum != null">
+        child_catalog_num = #{childCatalogNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="store != null">
+        store = #{store,jdbcType=INTEGER},
+      </if>
+      <if test="commCatalog != null">
+        comm_catalog = #{commCatalog,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="preface != null">
+        preface = #{preface,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.domain.commodityWithBLOBs">
+    update commodity
+    set comm_name = #{commName,jdbcType=VARCHAR},
+      comm_price = #{commPrice,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      press = #{press,jdbcType=VARCHAR},
+      pub_data = #{pubData,jdbcType=VARCHAR},
+      isbn = #{isbn,jdbcType=VARCHAR},
+      comm_label = #{commLabel,jdbcType=VARCHAR},
+      picture_name = #{pictureName,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      parent_catalog_num = #{parentCatalogNum,jdbcType=VARCHAR},
+      child_catalog_num = #{childCatalogNum,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      store = #{store,jdbcType=INTEGER},
+      comm_catalog = #{commCatalog,jdbcType=LONGVARCHAR},
+      preface = #{preface,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.domain.commodity">
+    update commodity
+    set comm_name = #{commName,jdbcType=VARCHAR},
+      comm_price = #{commPrice,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      press = #{press,jdbcType=VARCHAR},
+      pub_data = #{pubData,jdbcType=VARCHAR},
+      isbn = #{isbn,jdbcType=VARCHAR},
+      comm_label = #{commLabel,jdbcType=VARCHAR},
+      picture_name = #{pictureName,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      parent_catalog_num = #{parentCatalogNum,jdbcType=VARCHAR},
+      child_catalog_num = #{childCatalogNum,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      store = #{store,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <select id="Flow"  resultMap="ResultMapWithBLOBs">
+    select * from commodity where parent_catalog_num = #{parent_catalog_num} order by pub_data  desc limit 12
+  </select>
+  
+  
+</mapper>

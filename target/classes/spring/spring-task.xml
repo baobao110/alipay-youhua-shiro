@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+        
+	<bean id="transfer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	    <property name="targetObject" ref="alipay"/>
+	    <property name="targetMethod" value="work"/>
+	    <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="del" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	    <property name="targetObject" ref="canell"/>
+	    <property name="targetMethod" value="work"/>
+	    <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="canel" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	    <property name="jobDetail" ref="del"/>
+	    <property name="cronExpression" value="0/20 * * * * ?"/>
+	</bean>
+	
+	<bean id="pay" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	    <property name="jobDetail" ref="transfer"/>
+	    <property name="cronExpression" value="0/10 * * * * ?"/>
+	</bean>
+	
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <ref bean="pay"/>
+	             <ref bean="canel"/>
+	        </list>
+	    </property>
+	</bean>
+	
+</beans>
+
+<!-- 这里的问题之前 一直在配置中出现问题,这里在创建定时器时一个定时器对应一个类这里需要和Control做区分,这里区分二者的作用主要是因为在定时器是单独存在的-->
+<!-- 这里还有一个问题是别名的问题在spring中通过注解的方式在定时器类 -->

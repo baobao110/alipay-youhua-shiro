@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.childOrderMapper">
+  <resultMap id="BaseResultMap" type="com.domain.childOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderId" jdbcType="INTEGER" property="orderid" />
+    <result column="comId" jdbcType="INTEGER" property="comid" />
+    <result column="commNum" jdbcType="INTEGER" property="commnum" />
+    <result column="comPrice" jdbcType="INTEGER" property="comprice" />
+    <result column="total" jdbcType="INTEGER" property="total" />
+    <result column="comName" jdbcType="VARCHAR" property="comname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, orderId, comId, commNum, comPrice, total, comName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from childorder
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from childorder
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.domain.childOrder">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into childorder (orderId, comId, commNum, 
+      comPrice, total, comName
+      )
+    values (#{orderid,jdbcType=INTEGER}, #{comid,jdbcType=INTEGER}, #{commnum,jdbcType=INTEGER}, 
+      #{comprice,jdbcType=INTEGER}, #{total,jdbcType=INTEGER}, #{comname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.domain.childOrder">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into childorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        orderId,
+      </if>
+      <if test="comid != null">
+        comId,
+      </if>
+      <if test="commnum != null">
+        commNum,
+      </if>
+      <if test="comprice != null">
+        comPrice,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+      <if test="comname != null">
+        comName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="comid != null">
+        #{comid,jdbcType=INTEGER},
+      </if>
+      <if test="commnum != null">
+        #{commnum,jdbcType=INTEGER},
+      </if>
+      <if test="comprice != null">
+        #{comprice,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=INTEGER},
+      </if>
+      <if test="comname != null">
+        #{comname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.domain.childOrder">
+    update childorder
+    <set>
+      <if test="orderid != null">
+        orderId = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="comid != null">
+        comId = #{comid,jdbcType=INTEGER},
+      </if>
+      <if test="commnum != null">
+        commNum = #{commnum,jdbcType=INTEGER},
+      </if>
+      <if test="comprice != null">
+        comPrice = #{comprice,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=INTEGER},
+      </if>
+      <if test="comname != null">
+        comName = #{comname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.domain.childOrder">
+    update childorder
+    set orderId = #{orderid,jdbcType=INTEGER},
+      comId = #{comid,jdbcType=INTEGER},
+      commNum = #{commnum,jdbcType=INTEGER},
+      comPrice = #{comprice,jdbcType=INTEGER},
+      total = #{total,jdbcType=INTEGER},
+      comName = #{comname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
